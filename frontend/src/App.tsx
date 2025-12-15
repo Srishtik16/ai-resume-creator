@@ -49,6 +49,9 @@ Python, TypeScript, Go, React, Node.js, PostgreSQL, Redis, AWS, Docker, Kubernet
 \\end{document}
 `;
 
+// Environment variable for API URL (defaults to localhost if not set)
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
 function App() {
   const [code, setCode] = useState<string>(DEFAULT_LATEX);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -62,7 +65,7 @@ function App() {
   const handleCompile = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:8080/api/v1/resume/compile', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/resume/compile`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ latex_code: code }),
@@ -91,7 +94,7 @@ function App() {
     if (!prompt.trim()) return;
     setIsGenerating(true);
     try {
-      const response = await fetch('http://localhost:8080/api/v1/resume/generate', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/resume/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt, current_latex: code }),
@@ -119,7 +122,7 @@ function App() {
     formData.append('resume', file);
 
     try {
-      const response = await fetch('http://localhost:8080/api/v1/resume/upload', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/resume/upload`, {
         method: 'POST',
         body: formData,
       });
