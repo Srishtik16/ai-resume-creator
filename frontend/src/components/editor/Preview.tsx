@@ -1,5 +1,4 @@
-import React from 'react';
-import { FileText, Loader2 } from 'lucide-react';
+import { FileText } from 'lucide-react';
 
 interface PreviewProps {
     pdfUrl: string | null;
